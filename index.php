@@ -11,18 +11,29 @@ class eventHandler {
 		$this->events[$event][] = $func;
 	}
 	
-	function triggerEvent($event) {
+	function triggerEvent($event, $data) {
+		$eventClass = new event;
+		$eventClass->data = $data;
 		if(is_string($event) && is_array($this->events[$event])) {
 			foreach($this->events[$event] as $function) {
-				$function();
+				$function($eventClass);
 			}
 		}
 	}
 	
 	function __call($a, $b) {
-		if(empty($b)) $this->triggerEvent($a);
+		$allClosures = true;
+		foreach($b as $option) {
+			if(!$option instanceof Closure) {
+				$allClosures = false;
+			}
+		}
+		if(empty($b) || !$allClosures) $this->triggerEvent($a, $b);
 		else { foreach($b as $func) { $this->events[$a][] = $func; } }
 	}
+	
+}
+class event {
 	
 }
 ?>
