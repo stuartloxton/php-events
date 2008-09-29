@@ -25,6 +25,8 @@
 	
 	$db->connected(function() {
 		define('DB_CONNECTED', 'true');
+		echo '<h1>Connected</h1>';
+		return Event::unbind();
 	});
 	$db->querySuccess(function($e) {
 		echo '<h1>Query Returned</h1><pre>';
@@ -35,7 +37,8 @@
 		header('Location: /error/oops/');
 		exit;
 	});
-	
+	$db->connected();
 	$db->query();
+	$db->connected();
 ?>
 </pre>

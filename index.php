@@ -18,8 +18,9 @@ class EventHandler {
 		if(is_string($event) && is_array($this->events[$event])) {
 			$i = 0;
 			while($i < count($this->events[$event])) {
-				$return = $this->events[$event][$i]();
-				if(!$return) { $i = count($this->events[$event]); }
+				$code = $this->events[$event][$i]();
+				if(!$code) { $i = count($this->events[$event]); }
+				elseif($code == 'UNBIND') { unset($this->events[$event][$i]); }
 				$i++;
 			}
 		}
@@ -41,6 +42,10 @@ class Event {
 	
 	static function stop() {
 		return false;
+	}
+	
+	static function unbind() {
+		return 'UNBIND';
 	}
 	
 }
