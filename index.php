@@ -14,7 +14,7 @@ class EventHandler {
 	function triggerEvent($event, $data) {
 		$eventClass = new Event;
 		$eventClass->data = $data;
-		$eventClass->this = $this;
+		$eventClass->parent = $this;
 		if(is_string($event) && is_array($this->events[$event])) {
 			$i = 0;
 			while($i < count($this->events[$event])) {
