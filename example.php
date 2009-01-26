@@ -1,22 +1,19 @@
 <?php
-	include('index.php');
+	include('php-events.php');
 
 	class database extends EventHandler {
 		
-		function connect() {
-			// Do connection code
+		function connect() { // Connection code would go here
 			$this->connected();
 		}
 		
-		function query($query) {
-			// make code;
+		function query($query) { // Query code would go in here
 			$results = array(rand(), rand(), rand());
 			$success = (rand() % 2) ? true : false;
 			if($success) {
 				$this->querySuccess($results, $query);
 			} else {
-				$error = 'Example error';
-				$this->queryError($error, $query);
+				$this->queryError('Example Error', $query);
 			}
 		}
 		
@@ -30,10 +27,9 @@
 		return Event::UNBIND;
 	});
 	$db->querySuccess(function($e=false) {
-		echo '<h1>Query - '.$e->data[1].'</h1><pre>';
+		echo '<h1>Query - '.$e->data[1].'</h1>';
 		print_r($e->data[0]);
 		return Event::STOP;
-		echo '</pre>';
 	});
 	$db->queryError(function($e=false) {
 		echo '<h1>Query - '.$e->data[1].'</h1>';

@@ -1,0 +1,24 @@
+h1. PHP Events
+
+PHP events is a small library for binding, triggering and handling events. The syntax is mostly inspired by jQuery, with passing in a closure binding and calling without a param for triggering. PHP Events requires 5.3+ or 6+ (Both in testing).
+
+h3. Uses
+
+PHP events makes enhancing functionality of existing plugins a lot easier, instead of just giving the plugin a simple function to run at completion you can bind several functions to be run at certain points and manage them at runtime. E.g. If your using a database script you would call the @get_results@ method to get results. However your also building a debugger for the system and so want to be alerted of running a query, it's results and any errors. If your database script uses PHP events your debugger might look like below.
+
+<pre>
+<code>
+$queries = array();
+$db->query_success(function($e) {
+	global $queries;
+	$queries[] = array(
+			'sql' => $e->data[0]->sql,
+			'time' => $e->data[0]->time
+		);
+});
+</code>
+</pre>
+
+h3. Managing Events
+
+There are a few ways to manage events at runtime, to make an event be unbinded after running have at the end of function: @return Event::UNBIND@, if you want to stop the action queue for an event that just got fired return @false@ or @Event::STOP@
